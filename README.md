@@ -1,69 +1,81 @@
-# React + TypeScript + Vite
+# 🏥 HealthCare AI – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern **AI-powered healthcare system frontend** built with **React.js**. The platform enables users to analyze their health symptoms with AI, manage requests, and interact with healthcare features through a sleek, responsive, and animated UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## Expanding the ESLint configuration
+- 🎨 **Responsive Design** – Optimized for desktop, tablet, and mobile devices.
+- 🎬 **Framer Motion Animations** – Smooth and interactive animations for the Hero section and Navbar.
+- 🖼️ **Custom Hero Background** – AI-generated assets for a professional and engaging UI.
+- 🌐 **Dynamic Routing** – Powered by `react-router` for seamless navigation.
+- 📱 **Mobile-Friendly Navbar** – Animated hamburger menu with slide-in/out transition.
+- ⚡ **Optimized Performance** – Lightweight, fast, and accessible web experience.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **Frontend:** React.js, Tailwind CSS, Framer Motion
+- **Routing:** React Router
+- **Icons:** React Icons
+- **Backend (API):** Node.js, Express, MongoDB (already completed)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 📂 Project Structure
+
+```bash
+src/
+├── assets/          # Static images and backgrounds
+├── components/      # Reusable UI components (Navbar, Hero, etc.)
+├── pages/           # App pages (Landing, Login, Signup, Dashboard)
+├── App.jsx          # Root component
+└── main.jsx         # App entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🚀 Getting Started
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Follow these steps to run the project locally:
+
+### 1️⃣ Clone the repository
+
+```bash
+git clone https://github.com/your-username/healthcare-ai-frontend.git
+cd healthcare-ai-frontend
 ```
+
+### 2️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Start development server
+
+```bash
+npm run dev
+```
+
+App will be running at: **[http://localhost:5173](http://localhost:5173)**
+
+---
+
+## 📸 Screenshots
+
+(Add screenshots of your **Landing Page**, **Navbar animation**, and **Hero section**)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request.
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
