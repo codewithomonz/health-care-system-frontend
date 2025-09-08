@@ -4,6 +4,7 @@ import { TiThMenu } from "react-icons/ti";
 import { CgMenuMotion } from "react-icons/cg";
 import classNames from "classnames";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "@/assets/images/logo.png";
 
 const links = [
   { label: "Home", href: "/" },
@@ -45,9 +46,8 @@ const Navbar = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <Link to="/" className="text-2xl font-bold text-cyan-400">
-              HealthCare AI
-            </Link>
+            <Link to="/"></Link>
+            <img src={logo} alt="logo" className="h-12 w-auto" />
           </motion.div>
 
           {/* Desktop menu */}
@@ -75,7 +75,7 @@ const Navbar = () => {
               <Link
                 to="/login"
                 className={classNames(
-                  "transition-colors bg-cyan-400 hover:bg-cyan-700 py-2 px-4 text-white font-semibold rounded-2xl hover"
+                  "transition-colors bg-cyan-600 hover:bg-cyan-700 py-2 px-4 text-white font-semibold rounded-2xl hover"
                 )}
               >
                 Sign Up
