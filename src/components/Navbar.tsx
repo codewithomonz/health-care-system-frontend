@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 import { TiThMenu } from "react-icons/ti";
 import { CgMenuMotion } from "react-icons/cg";
 import classNames from "classnames";
@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/#about" },
   { label: "Sign In", href: "/login" },
   { label: "Sign Up", href: "/signup" },
 ];
@@ -15,7 +14,6 @@ const links = [
 const Navbar = () => {
   const [open, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,29 +63,33 @@ const Navbar = () => {
               },
             }}
           >
-            {links.map((link) => (
-              <motion.li
-                key={link.href}
-                variants={{
-                  hidden: { y: -10, opacity: 0 },
-                  visible: { y: 0, opacity: 1 },
-                }}
+            {/* {links.map((link) => ( */}
+            <motion.li
+              // key={link.href}
+              className="space-x-6"
+              variants={{
+                hidden: { y: -10, opacity: 0 },
+                visible: { y: 0, opacity: 1 },
+              }}
+            >
+              <Link
+                to="/login"
+                className={classNames(
+                  "transition-colors bg-cyan-400 hover:bg-cyan-700 py-2 px-4 text-white font-semibold rounded-2xl hover"
+                )}
               >
-                <Link
-                  to={link.href}
-                  className={classNames(
-                    "transition-colors hover:text-cyan-400 p-2 rounded-xl",
-                    {
-                      "text-white font-semibold":
-                        link.href === location.pathname,
-                      "text-gray-300": link.href !== location.pathname,
-                    }
-                  )}
-                >
-                  {link.label}
-                </Link>
-              </motion.li>
-            ))}
+                Sign Up
+              </Link>
+              <Link
+                to="/login"
+                className={classNames(
+                  "transition-colors hover:text-cyan-400 py-2 px-4 text-white font-semibold border hover:border-cyan-400 border-white rounded-2xl hover"
+                )}
+              >
+                Log In
+              </Link>
+            </motion.li>
+            {/* ))} */}
           </motion.ul>
 
           {/* Mobile menu toggle */}
