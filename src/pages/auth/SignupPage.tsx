@@ -1,149 +1,192 @@
-import { useState, useEffect } from "react";
-import { useAuthActions } from "@/hooks/useAuthActions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { useNavigate } from "react-router";
-
+import { useRegisterMutation } from "@/features/auth/authApiSlice";
 import AuthPageWrapper from "./_components/AuthPageWrapper";
 import loginImage from "@/assets/images/login.png";
 import logo from "@/assets/images/logo-2.png";
 import AuthPageHeader from "./_components/AuthPageHeader";
+import { toast } from "sonner";
 
-function getPasswordStrength(password: string) {
-  if (password.length < 6) return "Weak";
-  if (
-    /[A-Z]/.test(password) &&
-    /\d/.test(password) &&
-    /[^A-Za-z0-9]/.test(password)
-  )
-    return "Strong";
-  return "Medium";
-}
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { registerSchema } from "@/schema";
 
-export default function Signup() {
-  const { register, registerStatus, registerError } = useAuthActions();
-  const [form, setForm] = useState({
-    name: "",
-    hostpitalId: "",
-    password: "",
-    passwordConfirmation: "",
+export default function SignUpPage() {
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      hostpitalId: "",
+      name: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
-  const [strength, setStrength] = useState("");
+
   const navigate = useNavigate();
+  const [register, { isLoading }] = useRegisterMutation();
 
-  useEffect(() => {
-    if (registerStatus === "success") {
-      navigate("/dashboard", { replace: true });
+  async function onSubmit(values: z.infer<typeof registerSchema>) {
+    try {
+      const res = await register(values).unwrap();
+
+      console.log(res);
+
+      // Save full response to Redux
+      // dispatch(setCredentials(res));
+
+      toast.success(res.message);
+      navigate("/login");
+    } catch (error: unknown) {
+      console.error(error);
+      let message = "Login failed";
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (
+        typeof error === "object" &&
+        error !== null &&
+        "data" in error
+      ) {
+        const e = error as { data?: { message?: string } };
+        if (e.data?.message) message = e.data.message;
+      }
+      toast.error(message);
     }
-  }, [registerStatus, navigate]);
-
-  const handlePasswordChange = (value: string) => {
-    setForm({ ...form, password: value });
-    setStrength(getPasswordStrength(value));
-  };
+  }
 
   return (
     <AuthPageWrapper image={loginImage}>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          if (form.password !== form.passwordConfirmation) {
-            alert("Passwords do not match!");
-            return;
-          }
-          try {
-            await register(form);
-          } catch (err) {
-            console.log(err);
-            // handled by registerError
-          }
-        }}
-        className="w-full md:w-6/12 flex-1 h-screen bg-white/60 backdrop-blur-xl 
-        border-white/30 flex flex-col gap-6 items-start justify-center shadow-lg overflow-auto py-20"
-      >
-        <AuthPageHeader
-          title="HealthAi"
-          description="AI-driven health analysis, smarter and faster."
-          image={logo}
-        />
-
-        <div className="flex flex-col gap-5 w-full px-8 md:px-20">
-          <input
-            id="name"
-            type="text"
-            placeholder="Enter fullname"
-            disabled={registerStatus === "pending"}
-            className="w-full p-3 rounded-lg border border-slate-300"
-            value={form.name}
-            onChange={(e) => setForm({ ...form, name: e.target.value })}
-            required
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-full md:w-6/12 flex-1 h-screen bg-white/80 backdrop-blur-xl 
+        border-white/30 flex flex-col gap-6 items-start justify-center shadow-lg"
+        >
+          <AuthPageHeader
+            title="HealthAi"
+            description="AI-driven health analysis, smarter and faster."
+            image={logo}
           />
 
-          <input
-            id="hospitalId"
-            type="text"
-            placeholder="Choose hospital ID (eg: hp12345)"
-            disabled={registerStatus === "pending"}
-            className="w-full p-3 rounded-lg border border-slate-300"
-            value={form.hostpitalId}
-            onChange={(e) => setForm({ ...form, hostpitalId: e.target.value })}
-            required
-          />
+          <div className="flex flex-col gap-5 w-full px-8 md:px-12 lg:px-40">
+            <FormField
+              control={form.control}
+              name="hostpitalId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-slate-600"> Hospital-ID</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Choose your login-id eg hcs12345"
+                      {...field}
+                    />
+                  </FormControl>
 
-          <div>
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              disabled={registerStatus === "pending"}
-              className="w-full p-3 rounded-lg border border-slate-300"
-              value={form.password}
-              onChange={(e) => handlePasswordChange(e.target.value)}
-              required
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            {form.password && (
-              <p
-                className={`text-sm mt-1 ${
-                  strength === "Weak"
-                    ? "text-red-500"
-                    : strength === "Medium"
-                    ? "text-yellow-500"
-                    : "text-green-500"
-                }`}
-              >
-                Password strength: {strength}
-              </p>
-            )}
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-slate-600">Fullname</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Choose random name (not your real name)"
+                      {...field}
+                    />
+                  </FormControl>
+
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => {
+                const password = field.value || "";
+
+                const getStrength = () => {
+                  if (password.length < 8) return "Weak";
+                  if (!/[0-9]/.test(password)) return "Weak";
+                  if (!/[^A-Za-z0-9]/.test(password)) return "Medium";
+                  return "Strong";
+                };
+
+                const strength = getStrength();
+
+                return (
+                  <FormItem>
+                    <FormLabel className="text-slate-600">Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Enter your password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <p
+                      className={`text-sm mt-1 ${
+                        strength === "Weak"
+                          ? "text-red-500"
+                          : strength === "Medium"
+                          ? "text-yellow-500"
+                          : "text-green-600"
+                      }`}
+                    >
+                      Strength: {strength}
+                    </p>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-slate-600">
+                    Confirm Password
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Enter password confirmation"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
-          <input
-            id="passwordConfirmation"
-            type="password"
-            placeholder="Confirm password"
-            disabled={registerStatus === "pending"}
-            className="w-full p-3 rounded-lg border border-slate-300"
-            value={form.passwordConfirmation}
-            onChange={(e) =>
-              setForm({ ...form, passwordConfirmation: e.target.value })
-            }
-            required
-          />
-        </div>
-
-        <div className="px-8 md:px-20 w-full">
-          {registerError && (
-            <p className="text-red-500 text-sm mt-2 text-center">
-              {registerError.message || "Registration failed"}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={registerStatus === "pending"}
-            className="w-[150px] bg-cyan-600 hover:bg-cyan-700 py-3 rounded-lg text-white text-lg font-medium transition disabled:opacity-50 mx-auto block"
-          >
-            {registerStatus === "pending" ? "Registering..." : "Register"}
-          </button>
-        </div>
-      </form>
+          <div className="px-8 md:px-12 lg:px-40 w-full">
+            <Button
+              className="w-[150px] bg-cyan-600 hover:bg-cyan-700 py-4 rounded-lg text-white text-md font-medium transition disabled:opacity-50 mx-auto"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Registering..." : "Register"}
+            </Button>
+          </div>
+        </form>
+      </Form>
     </AuthPageWrapper>
   );
 }
