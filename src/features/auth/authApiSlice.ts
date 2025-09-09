@@ -1,4 +1,3 @@
-// src/redux/features/auth/authApiSlice.ts
 import { apiSlice } from "../api/apiSlice";
 import { LOGIN, REGISTER } from "../constant";
 

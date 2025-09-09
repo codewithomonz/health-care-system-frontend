@@ -10,7 +10,7 @@ const AuthPageHeader = ({
 }) => {
   return (
     <div className="flex flex-col gap-2 items-center justify-center w-full mt-20">
-      <div className="flex flex-col gap-4 items-start justify-center w-full px-8 md:px-20">
+      <div className="flex flex-col gap-4 items-start justify-center w-full px-8 md:px-12 lg:px-40">
         <Link to="/" className="">
           <img
             src={image}

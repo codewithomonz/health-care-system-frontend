@@ -2,18 +2,26 @@ import { createSlice } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 
 interface User {
+  _id: string;
   name: string;
   hostpitalId: string;
+  role: "admin" | "user";
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface AuthState {
   user: User | null;
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
+  expiresAt: string | null;
 }
 
 const initialState: AuthState = {
   user: null,
-  token: null,
+  accessToken: null,
+  refreshToken: null,
+  expiresAt: null,
 };
 
 const authSlice = createSlice({
@@ -21,15 +29,31 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { user, token } = action.payload;
+      const { user, accessToken, refreshToken, expiresAt } = action.payload;
+
       state.user = user;
-      state.token = token;
-      Cookies.set("hcs-token", token, { expires: 7 });
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.expiresAt = expiresAt;
+
+      // Save to cookies
+      Cookies.set("hcs-access-token", accessToken, { expires: 7 });
+      Cookies.set("hcs-refresh-token", refreshToken, { expires: 7 });
+      Cookies.set("hcs-expires-at", expiresAt, { expires: 7 });
+      state.user = user;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
+      state.expiresAt = expiresAt;
     },
     logout: (state) => {
       state.user = null;
-      state.token = null;
-      Cookies.remove("hcs-token");
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.expiresAt = null;
+
+      Cookies.remove("hcs-access-token");
+      Cookies.remove("hcs-refresh-token");
+      Cookies.remove("hcs-expires-at");
     },
   },
 });
