@@ -4,7 +4,7 @@ import About from "@/components/About";
 import Footer from "@/components/Footer";
 import Instructions from "@/components/Instructions";
 
-export default function Landing() {
+export default function LandingPage() {
   return (
     <>
       <Navbar />
