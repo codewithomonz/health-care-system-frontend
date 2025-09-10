@@ -28,6 +28,7 @@ export const Sidebar = ({ onMenuClick }: Props) => {
   ];
 
   const userCustomerMenu = [
+    { href: "/user-feedback", label: "Feedbacks", icon: MessageSquareText },
     { href: "/users", label: "Users", icon: Users },
     { href: "/settings", label: "Settings", icon: Settings },
   ];
@@ -84,9 +85,9 @@ export const Sidebar = ({ onMenuClick }: Props) => {
           </li>
         </ul>
 
-        <MenuHeader title="Diagnosis History" />
+        <MenuHeader title="Admin Section" />
         <ul className="flex flex-col gap-2">
-          {salesMenu.map((item) => {
+          {userCustomerMenu.map((item) => {
             const active = isActive(item.href);
             return (
               <li key={item.href} onClick={onMenuClick}>
@@ -109,9 +110,9 @@ export const Sidebar = ({ onMenuClick }: Props) => {
           })}
         </ul>
 
-        <MenuHeader title="Users" />
+        <MenuHeader title="Diagnosis History" />
         <ul className="flex flex-col gap-2">
-          {userCustomerMenu.map((item) => {
+          {salesMenu.map((item) => {
             const active = isActive(item.href);
             return (
               <li key={item.href} onClick={onMenuClick}>
