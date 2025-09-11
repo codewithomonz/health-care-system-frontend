@@ -4,3 +4,7 @@ export const BASE_URL = "http://localhost:8000/api/v1";
 export const LOGIN = "/auth/login";
 export const REGISTER = "/auth/register";
 export const ME = "/auth/me";
+
+// symptoms
+export const CREATE_SYMPTOMS = "/symptoms";
+export const GET_SYMPTOMS = "/symptoms";

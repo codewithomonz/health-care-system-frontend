@@ -32,3 +32,15 @@ export const registerSchema = z
     path: ["confirmPassword"],
     message: "Passwords do not match.",
   });
+
+export const symptomsSchema = z.object({
+  freeText: z.string().min(12, {
+    message: "Please provide a short description of how you feel.",
+  }),
+  symptoms: z
+    .array(z.string().min(1, "Each symptom must not be empty"))
+    .min(1, { message: "Please enter at least one symptom." }),
+  context: z.string().min(10, {
+    message: "Please provide some background (e.g. when it started).",
+  }),
+});
