@@ -15,6 +15,7 @@ export const symptomsApiSlice = apiSlice.injectEndpoints({
           method: "POST",
           body: data,
         }),
+        invalidatesTags: ["Symptoms"], // ✅ no error
       }
     ),
 
@@ -24,6 +25,7 @@ export const symptomsApiSlice = apiSlice.injectEndpoints({
         url: `${CREATE_SYMPTOMS}/analysis`,
         method: "GET",
       }),
+      providesTags: ["Symptoms"], // ✅ no error
     }),
 
     // Get single analysis by ID
@@ -40,11 +42,13 @@ export const symptomsApiSlice = apiSlice.injectEndpoints({
         url: `${CREATE_SYMPTOMS}/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Symptoms"], // ✅ trigger refetch of getUserAnalyses
     }),
 
     // Admin only — get all analyses
     getAllAnalysesAdmin: builder.query<SymptomAnalysisResponse, void>({
       query: () => `${CREATE_SYMPTOMS}/all`,
+      providesTags: ["Symptoms"], // optional: keeps admin list fresh too
     }),
   }),
 });

@@ -7,6 +7,11 @@ export interface Feedback {
   createdAt: string;
 }
 
+interface FeedbackResponse {
+  message: string;
+  data: Feedback[];
+}
+
 export const feedbackApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Create new feedback
@@ -19,11 +24,13 @@ export const feedbackApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Feedback"], // ✅ refetch list after creating
     }),
 
     // Get all feedbacks (admin only)
-    getAllFeedbacks: builder.query<Feedback[], void>({
+    getAllFeedbacks: builder.query<FeedbackResponse, void>({
       query: () => "/feedback",
+      providesTags: ["Feedback"], // ✅ this query provides the "Feedback" tag
     }),
 
     // Delete feedback (admin only)
@@ -32,6 +39,7 @@ export const feedbackApiSlice = apiSlice.injectEndpoints({
         url: `/feedback/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["Feedback"], // ✅ refetch list after deleting
     }),
   }),
 });

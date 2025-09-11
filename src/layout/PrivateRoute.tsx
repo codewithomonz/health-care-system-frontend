@@ -12,7 +12,7 @@ export default function PrivateRoute() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="flex h-screen overflow-hidden  mx-auto drop-shadow-2xl">
+    <div className="flex h-screen overflow-hidden  mx-auto drop-shadow-2xl relative">
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 z-30 w-64 bg-slate-200 transform transition-transform duration-300

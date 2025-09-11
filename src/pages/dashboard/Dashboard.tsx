@@ -6,7 +6,6 @@ import { z } from "zod";
 import { useState } from "react";
 import { X } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -20,11 +19,22 @@ import { Textarea } from "@/components/ui/textarea";
 import { symptomsSchema } from "@/schema";
 import { useCreateSymptomsMutation } from "@/features/symptoms/symptomsApiSlice";
 
+import { MessageSquare } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import FeedbackForm from "@/components/FeedbackForm";
+
 export default function Dashboard() {
   const [symptomInput, setSymptomInput] = useState("");
   const [symptoms, setSymptoms] = useState<string[]>([]);
   const [analysisResponse, setAnalysisResponse] = useState<any | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
   const [createSymptoms, { isLoading }] = useCreateSymptomsMutation();
 
@@ -59,8 +69,8 @@ export default function Dashboard() {
     try {
       const res = await createSymptoms(values).unwrap();
 
-      if (res?.data?.data) {
-        setAnalysisResponse(res.data.data);
+      if (res) {
+        setAnalysisResponse(res);
       }
 
       form.reset();
@@ -238,6 +248,23 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+
+      <Button
+        onClick={() => setIsFeedbackOpen(true)}
+        className="fixed bottom-8 right-8 w-14 h-14 rounded-full shadow-lg bg-cyan-600 hover:bg-cyan-700 flex items-center justify-center"
+      >
+        <MessageSquare size={22} className="text-white" />
+      </Button>
+
+      {/* Feedback Modal */}
+      <Dialog open={isFeedbackOpen} onOpenChange={setIsFeedbackOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Give Feedback</DialogTitle>
+          </DialogHeader>
+          <FeedbackForm onClose={() => setIsFeedbackOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

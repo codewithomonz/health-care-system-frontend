@@ -1,6 +1,7 @@
 import {
   useGetAllFeedbacksQuery,
   useDeleteFeedbackMutation,
+  type Feedback,
 } from "@/features/feedback/feedbackApiSlice";
 
 const FeedbackPage = () => {
@@ -9,9 +10,15 @@ const FeedbackPage = () => {
 
   const handleDelete = async (id: string) => {
     if (confirm("Are you sure you want to delete this feedback?")) {
-      await deleteFeedback(id);
+      try {
+        await deleteFeedback(id).unwrap();
+      } catch (error) {
+        console.error("Failed to delete feedback:", error);
+      }
     }
   };
+
+  const hasFeedback = feedbacks?.data && feedbacks.data.length > 0;
 
   if (isLoading) return <p>Loading feedbacks...</p>;
   if (isError) return <p className="text-red-600">Failed to load feedbacks</p>;
@@ -19,12 +26,13 @@ const FeedbackPage = () => {
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h4 className="text-2xl font-semibold mb-6">User Feedbacks</h4>
-      {feedbacks && feedbacks.length > 0 ? (
+
+      {hasFeedback ? (
         <ul className="space-y-4">
-          {feedbacks.map((fb) => (
+          {feedbacks!.data.map((fb: Feedback) => (
             <li
               key={fb._id}
-              className="p-4 border rounded-lg shadow flex justify-between items-center"
+              className="p-4 border rounded-lg shadow flex justify-between items-center bg-slate-50"
             >
               <div>
                 <p className="font-medium">{fb.message}</p>

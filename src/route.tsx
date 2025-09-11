@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
       { path: "diagnosis-history", element: <DiagnosisHistory /> },
       { path: "feedback", element: <FeedbackPage /> },
       { path: "admin", element: <AdminPage /> },
-      { path: "user-feedback ", element: <FeedbackListPage /> },
+      { path: "user-feedback", element: <FeedbackListPage /> },
       { path: "users", element: <UsersPage /> },
       { path: "settings", element: <SettingsPage /> },
     ],

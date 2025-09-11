@@ -3,7 +3,6 @@ import {
   MessageSquareText,
   MessageCircle,
   Users,
-  Settings,
   History,
   X,
 } from "lucide-react";
@@ -27,13 +26,11 @@ export const Sidebar = ({ onMenuClick }: Props) => {
   const mainMenu = [
     { href: "/dashboard", label: "Chat", icon: MessageSquareText },
     { href: "/diagnosis-history", label: "Diagnosis History", icon: History },
-    { href: "/feedback", label: "Feedback", icon: MessageCircle },
   ];
 
   const adminMenu = [
     { href: "/user-feedback", label: "Feedbacks", icon: MessageCircle },
     { href: "/users", label: "Users", icon: Users },
-    { href: "/settings", label: "Settings", icon: Settings },
   ];
 
   const MenuHeader = ({ title }: { title: string }) => (
@@ -44,6 +41,7 @@ export const Sidebar = ({ onMenuClick }: Props) => {
 
   const isActive = (path: string) => location.pathname.startsWith(path);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const renderMenu = (items: { href: string; label: string; icon: any }[]) => (
     <ul className="flex flex-col gap-2">
       {items.map((item) => {
