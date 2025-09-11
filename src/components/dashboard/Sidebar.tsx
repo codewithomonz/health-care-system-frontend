@@ -1,9 +1,10 @@
 import {
   LogOut,
-  LayoutDashboard,
   MessageSquareText,
+  MessageCircle,
   Users,
   Settings,
+  History,
   X,
 } from "lucide-react";
 import { Link, useLocation } from "react-router";
@@ -19,16 +20,18 @@ export const Sidebar = ({ onMenuClick }: Props) => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
     dispatch(logout());
   };
 
-  const salesMenu = [
-    { href: "/feedback", label: "Feedback", icon: MessageSquareText },
+  const mainMenu = [
+    { href: "/dashboard", label: "Chat", icon: MessageSquareText },
+    { href: "/diagnosis-history", label: "Diagnosis History", icon: History },
+    { href: "/feedback", label: "Feedback", icon: MessageCircle },
   ];
 
-  const userCustomerMenu = [
-    { href: "/user-feedback", label: "Feedbacks", icon: MessageSquareText },
+  const adminMenu = [
+    { href: "/user-feedback", label: "Feedbacks", icon: MessageCircle },
     { href: "/users", label: "Users", icon: Users },
     { href: "/settings", label: "Settings", icon: Settings },
   ];
@@ -40,6 +43,32 @@ export const Sidebar = ({ onMenuClick }: Props) => {
   );
 
   const isActive = (path: string) => location.pathname.startsWith(path);
+
+  const renderMenu = (items: { href: string; label: string; icon: any }[]) => (
+    <ul className="flex flex-col gap-2">
+      {items.map((item) => {
+        const active = isActive(item.href);
+        return (
+          <li key={item.href} onClick={onMenuClick}>
+            <Link
+              to={item.href}
+              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                active
+                  ? "bg-cyan-100 text-cyan-900"
+                  : "text-slate-600 hover:bg-slate-100"
+              }`}
+            >
+              <item.icon
+                size={18}
+                className={active ? "text-cyan-900" : "text-slate-500"}
+              />
+              <span>{item.label}</span>
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
 
   return (
     <aside className="flex h-full flex-col gap-6 px-4 py-5 bg-white shadow-md w-full overflow-auto">
@@ -64,76 +93,10 @@ export const Sidebar = ({ onMenuClick }: Props) => {
       {/* Navigation */}
       <nav className="flex flex-col gap-4">
         <MenuHeader title="Main" />
-        <ul className="flex flex-col gap-2">
-          <li onClick={onMenuClick}>
-            <Link
-              to="/dashboard"
-              className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                isActive("/dashboard")
-                  ? "bg-cyan-100 text-cyan-900"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              <LayoutDashboard
-                className={`${
-                  isActive("/dashboard") ? "text-cyan-900" : "text-slate-500"
-                }`}
-                size={18}
-              />
-              <span>{`Dashboard`}</span>
-            </Link>
-          </li>
-        </ul>
+        {renderMenu(mainMenu)}
 
         <MenuHeader title="Admin Section" />
-        <ul className="flex flex-col gap-2">
-          {userCustomerMenu.map((item) => {
-            const active = isActive(item.href);
-            return (
-              <li key={item.href} onClick={onMenuClick}>
-                <Link
-                  to={item.href}
-                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    active
-                      ? "bg-cyan-50 text-cyan-900"
-                      : "text-slate-600 hover:bg-slate-100"
-                  }`}
-                >
-                  <item.icon
-                    size={18}
-                    className={active ? "text-cyan-900" : "text-slate-500"}
-                  />
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-
-        <MenuHeader title="Diagnosis History" />
-        <ul className="flex flex-col gap-2">
-          {salesMenu.map((item) => {
-            const active = isActive(item.href);
-            return (
-              <li key={item.href} onClick={onMenuClick}>
-                <Link
-                  to={item.href}
-                  className={`flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    active
-                      ? "bg-cyan-50 text-cyan-900"
-                      : "text-slate-600 hover:bg-slate-100"
-                  }`}
-                >
-                  <item.icon
-                    size={18}
-                    className={active ? "text-cyan-900" : "text-slate-500"}
-                  />
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+        {renderMenu(adminMenu)}
       </nav>
 
       {/* Logout */}
