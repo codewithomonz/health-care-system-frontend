@@ -27,7 +27,7 @@ export interface User {
 export interface UpdateProfileResponse {
   success: boolean;
   message: string;
-  data: User; // 👈 not an array
+  data: User[]; // 👈 not an array
 }
 
 export const userApiSlice = apiSlice.injectEndpoints({

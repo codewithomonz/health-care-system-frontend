@@ -15,8 +15,11 @@ export interface SymptomAnalysis {
   updatedAt: string;
   __v: number;
 }
-
 export interface SymptomAnalysisResponse {
+  success: boolean;
+  data: SymptomAnalysis[];
+}
+export interface SymptomAnalysisSingleResponse {
   success: boolean;
   data: SymptomAnalysis;
 }

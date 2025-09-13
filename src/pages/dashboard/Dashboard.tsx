@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -66,7 +66,7 @@ export default function Dashboard() {
       const res = await createSymptoms(values).unwrap();
 
       if (res?.data) {
-        setAnalysisResponse(res.data); // ✅ fix here
+        setAnalysisResponse(res.data[0]); // ✅ fix here
       }
 
       form.reset();
@@ -262,6 +262,7 @@ export default function Dashboard() {
       {/* Feedback Modal */}
       <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
         <DialogContent className="sm:max-w-md rounded-xl">
+          <DialogTitle>Feedback</DialogTitle>
           <FeedbackForm onClose={() => setFeedbackOpen(false)} />
         </DialogContent>
       </Dialog>

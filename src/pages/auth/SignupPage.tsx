@@ -25,7 +25,7 @@ export default function SignUpPage() {
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      hostpitalId: "",
+      hospitalId: "",
       name: "",
       password: "",
       confirmPassword: "",
@@ -80,7 +80,7 @@ export default function SignUpPage() {
           <div className="flex flex-col gap-5 w-full px-8 md:px-12 lg:px-40">
             <FormField
               control={form.control}
-              name="hostpitalId"
+              name="hospitalId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-slate-600"> Hospital-ID</FormLabel>

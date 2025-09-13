@@ -2,6 +2,7 @@ import { useGetUserAnalysesQuery } from "@/features/symptoms/symptomsApiSlice";
 import { type SymptomAnalysis } from "@/types/symptoms";
 import LoadingSkeleton from "@/components/LoadingSkeleton";
 import ErrorMessage from "@/components/ErrorMessage";
+import { Link } from "react-router";
 
 const DiagnosisHistory = () => {
   const { isError, isLoading, data: analysis } = useGetUserAnalysesQuery();
@@ -60,7 +61,42 @@ const DiagnosisHistory = () => {
           ))}
         </div>
       ) : (
-        <p>No history yet</p>
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          {/* Decorative Icon */}
+          <div className="bg-cyan-100 p-6 rounded-full mb-6">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-12 w-12 text-cyan-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 17v-6h13v6M9 11V7a4 4 0 018 0v4m-4 6h.01"
+              />
+            </svg>
+          </div>
+
+          {/* Message */}
+          <h3 className="text-2xl font-semibold text-slate-800 mb-2">
+            No Diagnosis History Yet
+          </h3>
+          <p className="text-slate-500 max-w-sm">
+            Once you start submitting symptoms, your past diagnoses will appear
+            here.
+          </p>
+
+          {/* Call-to-Action */}
+          <Link
+            to="/dashboard"
+            className="mt-6 px-6 py-3 bg-cyan-500 text-white rounded-xl shadow hover:bg-cyan-600 transition"
+          >
+            Start New Diagnosis
+          </Link>
+        </div>
       )}
     </div>
   );
