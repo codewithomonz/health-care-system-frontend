@@ -26,7 +26,7 @@ const UsersPage = () => {
           {users!.data?.map((user: User) => (
             <tr key={user._id} className="hover:bg-gray-50">
               <td className="p-2 border">{user.name}</td>
-              <td className="p-2 border">{user.hostpitalId}</td>
+              <td className="p-2 border">{user.hospitalId}</td>
               <td className="p-2 border">{user.role}</td>
               <td className="p-2 border">
                 {new Date(user.createdAt).toLocaleDateString()}

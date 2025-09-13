@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router";
-
+import ErrorBoundary from "@/components/ErrorBoundary";
 import PublicLayout from "@/layout/PublicLayout";
 import PrivateRoute from "@/layout/PrivateRoute";
 
@@ -20,7 +20,11 @@ import {
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <PublicLayout />,
+    element: (
+      <ErrorBoundary>
+        <PublicLayout />
+      </ErrorBoundary>
+    ),
     children: [
       { index: true, element: <LandingPage /> },
       { path: "login", element: <LoginPage /> },
@@ -29,7 +33,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <PrivateRoute />,
+    element: (
+      // <ErrorBoundary>
+      <PrivateRoute />
+      // </ErrorBoundary>
+    ),
     children: [
       { path: "dashboard", element: <Dashboard /> },
       { path: "diagnosis-history", element: <DiagnosisHistory /> },

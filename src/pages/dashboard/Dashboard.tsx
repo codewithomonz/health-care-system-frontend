@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { X } from "lucide-react";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,27 +15,22 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { MessageSquare } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { symptomsSchema } from "@/schema";
 import { useCreateSymptomsMutation } from "@/features/symptoms/symptomsApiSlice";
-
-import { MessageSquare } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import type { SymptomAnalysis } from "@/types/symptoms";
 import FeedbackForm from "@/components/FeedbackForm";
 
 export default function Dashboard() {
   const [symptomInput, setSymptomInput] = useState("");
   const [symptoms, setSymptoms] = useState<string[]>([]);
-  const [analysisResponse, setAnalysisResponse] = useState<any | null>(null);
+  const [analysisResponse, setAnalysisResponse] =
+    useState<SymptomAnalysis | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const [createSymptoms, { isLoading }] = useCreateSymptomsMutation();
 
@@ -69,14 +65,15 @@ export default function Dashboard() {
     try {
       const res = await createSymptoms(values).unwrap();
 
-      if (res) {
-        setAnalysisResponse(res);
+      if (res?.data) {
+        setAnalysisResponse(res.data); // ✅ fix here
       }
 
       form.reset();
       setSymptoms([]);
       setSymptomInput("");
     } catch (err: any) {
+      console.log(err);
       const message =
         err?.data?.error ||
         err?.data?.message ||
@@ -211,7 +208,7 @@ export default function Dashboard() {
 
         {/* Success bubble */}
         {analysisResponse && (
-          <div className="space-y-4">
+          <div className="space-y-4 ">
             <div className="flex justify-end">
               <div className="bg-cyan-500 text-white px-4 py-3 rounded-2xl max-w-[80%] shadow">
                 {analysisResponse.freeText}
@@ -219,11 +216,16 @@ export default function Dashboard() {
             </div>
 
             <div className="flex justify-start">
-              <div className="bg-slate-100 text-slate-800 px-4 py-3 rounded-2xl max-w-[80%] shadow space-y-3">
+              <div className="bg-white text-slate-800 px-4 py-3 rounded-2xl max-w-[80%] shadow space-y-3">
                 <p>
                   <strong>Possible Conditions:</strong>{" "}
-                  {analysisResponse.differentials.join(", ")}
+                  <ul className="list-disc pl-6 text-sm">
+                    {analysisResponse?.differentials?.map((step, i) => (
+                      <li key={i}>{step}</li>
+                    ))}
+                  </ul>
                 </p>
+
                 <p>
                   <strong>Triage:</strong> {analysisResponse.triage}
                 </p>
@@ -249,20 +251,18 @@ export default function Dashboard() {
         )}
       </div>
 
-      <Button
-        onClick={() => setIsFeedbackOpen(true)}
-        className="fixed bottom-8 right-8 w-14 h-14 rounded-full shadow-lg bg-cyan-600 hover:bg-cyan-700 flex items-center justify-center"
+      <button
+        onClick={() => setFeedbackOpen(true)}
+        className="fixed bottom-6 right-6 flex items-center gap-2 px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white font-medium rounded-full shadow-lg transition"
       >
-        <MessageSquare size={22} className="text-white" />
-      </Button>
+        <MessageSquare size={18} />
+        Feedback
+      </button>
 
       {/* Feedback Modal */}
-      <Dialog open={isFeedbackOpen} onOpenChange={setIsFeedbackOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Give Feedback</DialogTitle>
-          </DialogHeader>
-          <FeedbackForm onClose={() => setIsFeedbackOpen(false)} />
+      <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+        <DialogContent className="sm:max-w-md rounded-xl">
+          <FeedbackForm onClose={() => setFeedbackOpen(false)} />
         </DialogContent>
       </Dialog>
     </div>

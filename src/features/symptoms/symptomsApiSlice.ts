@@ -8,16 +8,17 @@ import {
 export const symptomsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Create a new symptoms analysis
-    createSymptoms: builder.mutation<SymptomAnalysis, Partial<SymptomAnalysis>>(
-      {
-        query: (data) => ({
-          url: `${CREATE_SYMPTOMS}`,
-          method: "POST",
-          body: data,
-        }),
-        invalidatesTags: ["Symptoms"], // ✅ no error
-      }
-    ),
+    createSymptoms: builder.mutation<
+      SymptomAnalysisResponse,
+      Partial<SymptomAnalysis>
+    >({
+      query: (data) => ({
+        url: `${CREATE_SYMPTOMS}`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Symptoms"], // ✅ no error
+    }),
 
     // Get all analyses for logged-in user
     getUserAnalyses: builder.query<SymptomAnalysisResponse, void>({

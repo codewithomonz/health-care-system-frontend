@@ -7,9 +7,10 @@ import {
   X,
 } from "lucide-react";
 import { Link, useLocation } from "react-router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/features/auth/authSlice";
 import logo from "@/assets/images/logo.png";
+import type { RootState } from "@/features/store";
 
 type Props = {
   onMenuClick: () => void;
@@ -18,6 +19,8 @@ type Props = {
 export const Sidebar = ({ onMenuClick }: Props) => {
   const dispatch = useDispatch();
   const location = useLocation();
+
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -93,8 +96,12 @@ export const Sidebar = ({ onMenuClick }: Props) => {
         <MenuHeader title="Main" />
         {renderMenu(mainMenu)}
 
-        <MenuHeader title="Admin Section" />
-        {renderMenu(adminMenu)}
+        {user?.role === "admin" && (
+          <>
+            <MenuHeader title="Admin Section" />
+            {renderMenu(adminMenu)}
+          </>
+        )}
       </nav>
 
       {/* Logout */}

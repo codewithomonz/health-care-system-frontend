@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  hostpitalId: z.string().min(2, {
-    message: "hostpitalId must be at least 2 characters.",
+  hospitalId: z.string().min(6, {
+    message: "hospitalId must be at least 2 characters.",
   }),
   password: z.string().min(6, {
     message: "password must be at least6 characters.",
@@ -11,7 +11,7 @@ export const loginSchema = z.object({
 
 export const registerSchema = z
   .object({
-    hostpitalId: z.string().min(2, {
+    hospitalId: z.string().min(6, {
       message: "Hospital ID must be at least 2 characters.",
     }),
     name: z.string().min(4, {

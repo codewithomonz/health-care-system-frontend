@@ -8,3 +8,4 @@ export const ME = "/auth/me";
 // symptoms
 export const CREATE_SYMPTOMS = "/symptoms";
 export const GET_SYMPTOMS = "/symptoms";
+export const USERS = "/users";

@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 interface User {
   _id: string;
   name: string;
-  hostpitalId: string;
+  hospitalId: string;
   role: "admin" | "user";
   createdAt: string;
   updatedAt: string;

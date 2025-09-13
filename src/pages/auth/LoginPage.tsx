@@ -27,7 +27,7 @@ export default function LoginPage() {
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      hostpitalId: "",
+      hospitalId: "",
       password: "",
     },
   });
@@ -79,7 +79,7 @@ export default function LoginPage() {
           <div className="flex flex-col gap-5 w-full px-8 md:px-12 lg:px-40">
             <FormField
               control={form.control}
-              name="hostpitalId"
+              name="hospitalId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-slate-600"> Hospital-ID</FormLabel>

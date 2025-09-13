@@ -18,6 +18,5 @@ export interface SymptomAnalysis {
 
 export interface SymptomAnalysisResponse {
   success: boolean;
-  message: string;
-  data: SymptomAnalysis[];
+  data: SymptomAnalysis;
 }
