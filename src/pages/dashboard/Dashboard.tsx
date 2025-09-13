@@ -65,8 +65,10 @@ export default function Dashboard() {
     try {
       const res = await createSymptoms(values).unwrap();
 
+      console.log("User Analysis: ", res?.data);
+
       if (res?.data) {
-        setAnalysisResponse(res.data[0]); // ✅ fix here
+        setAnalysisResponse(res.data); // ✅ fix here
       }
 
       form.reset();
