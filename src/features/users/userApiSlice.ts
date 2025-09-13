@@ -1,24 +1,39 @@
 import { apiSlice } from "../api/apiSlice";
 import { USERS } from "../constant";
 
+// export interface User {
+//   _id: string;
+//   name: string;
+//   hospitalId: string;
+//   role: string;
+//   createdAt: string;
+// }
+
+// interface UserResponse {
+//   success: string;
+//   count: number;
+//   data: User[];
+// }
+
 export interface User {
   _id: string;
   name: string;
   hospitalId: string;
   role: string;
   createdAt: string;
+  updatedAt: string;
 }
 
-interface UserResponse {
-  success: string;
-  count: number;
-  data: User[];
+export interface UpdateProfileResponse {
+  success: boolean;
+  message: string;
+  data: User; // 👈 not an array
 }
 
 export const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all users (Admin only)
-    getUsers: builder.query<UserResponse, void>({
+    getUsers: builder.query<UpdateProfileResponse, void>({
       query: () => ({
         url: `${USERS}`,
         method: "GET",
@@ -27,9 +42,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
 
     // Update user profile
-    updateUserProfile: builder.mutation<User, Partial<User>>({
+    updateUserProfile: builder.mutation<UpdateProfileResponse, Partial<User>>({
       query: (data) => ({
-        url: `${USERS}/${data._id}`,
+        url: `${USERS}/profile`,
         method: "PUT",
         body: data,
       }),
