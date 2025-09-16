@@ -70,11 +70,7 @@ export default function LoginPage() {
           className="w-full md:w-6/12 flex-1 h-screen bg-white/80 backdrop-blur-xl 
         border-white/30 flex flex-col gap-6 items-start justify-center shadow-lg"
         >
-          <AuthPageHeader
-            title="HealthAi"
-            description="AI-driven health analysis, smarter and faster."
-            image={logo}
-          />
+          <AuthPageHeader title="HealthAi" image={logo} />
 
           <div className="flex flex-col gap-5 w-full px-8 md:px-12 lg:px-40">
             <FormField
